@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dominion League Standings</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=MedievalSharp&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+
+  background:
+    url('https://www.transparenttextures.com/patterns/gravel.png'),
+    radial-gradient(circle at top, #6b5635, #2a2218);
+
+  background-blend-mode: soft-light;
+
+  color: #f5f1e6;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  background: radial-gradient(circle at center,
+    rgba(255,200,120,0.12),
+    rgba(0,0,0,0.6));
+
+  z-index: 0;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  background: radial-gradient(circle at 50% 20%,
+    rgba(255,180,80,0.08),
+    transparent 60%);
+
+  animation: flicker 4s infinite;
+  z-index: 0;
+}
+
+@keyframes flicker {
+  0%   { opacity: 0.08; }
+  25%  { opacity: 0.12; }
+  50%  { opacity: 0.07; }
+  75%  { opacity: 0.14; }
+  100% { opacity: 0.09; }
+}
+
+
+
+.container, header {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+/* HEADER */
+header {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)),
+              url('https://images.unsplash.com/photo-1472502516535-eeee381bb45e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0')
+              no-repeat;
+  background-size: cover;
+  background-position: 30% center;
+  border-bottom: 3px solid gold;
+}
+
+header h1 {
+  font-family: 'MedievalSharp', serif;
+  font-size: 3.5rem;
+  margin: 0;
+  text-shadow:
+    0 0 8px rgba(255,200,120,.9),
+    0 0 18px rgba(255,160,60,.7),
+    0 0 30px rgba(255,120,40,.4),
+    0 2px 8px rgba(0,0,0,.9);
+}
+
+header p {
+  font-style: italic;
+  opacity: 0.9;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* LEADER */
+.leader-banner {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: gold;
+}
+
+/* TABLE */
+.table-wrapper {
+  background: rgba(0,0,0,0.6);
+  border-radius: 12px;
+  padding: 10px;
+  border: 2px solid #8b6b2b;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.7);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+}
+
+th {
+  background: linear-gradient(#7a5a2b, #5a3e1b);
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+}
+
+td {
+  font-family: 'Cinzel', serif;
+}
+
+.rank { color: gold; font-weight: bold; font-size: 1.2rem; }
+.league-points { color: gold; font-weight: bold; }
+
+tr:nth-child(even) { background: rgba(255,255,255,0.05); }
+tr:hover { background: rgba(255,215,0,0.1); }
+
+.first-place {
+  background: linear-gradient(to right, rgba(255,215,0,0.25), transparent);
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 5px gold; }
+  to { box-shadow: 0 0 15px gold; }
+}
+
+/* SECTION TITLES */
+.section-title {
+  font-family: 'Cinzel', serif;
+  margin-top: 40px;
+  border-bottom: 2px solid gold;
+  display: inline-block;
+}
+
+.subtitle {
+  font-family: 'Cinzel', serif;
+  font-style: italic;
+  opacity: 0.85;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+/* GAME CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: linear-gradient(#f5e6c8, #e0cfa5);
+  color: #2b1e0f;
+  border: 3px solid #8b6b2b;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+}
+
+.card h3 {
+  margin-top: 0;
+  font-family: 'Cinzel', serif;
+}
+
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Cinzel', serif;
+}
+
+.vp-icon {
+  width: 16px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+/* PLAYER SECTION (FELT TABLE) */
+.players-section {
+  margin-top: 20px;
+  padding: 25px;
+  border-radius: 16px;
+  background: radial-gradient(circle at center, #2f5d3a, #1e3d27);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.7);
+}
+
+/* PLAYER CARDS */
+.player-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.player-cards img {
+  width: 240px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+
+
+/* PLAYER AURAS */
+.player-cards a:nth-child(1) img {
+  box-shadow:
+    0 0 12px rgba(255,180,80,.8),
+    0 0 25px rgba(255,140,40,.5);
+}   /* John - Amber */
+
+.player-cards a:nth-child(2) img {
+  box-shadow:
+    0 0 12px rgba(100,255,120,.8),
+    0 0 25px rgba(60,200,80,.5);
+}   /* Jen - Green */
+
+.player-cards a:nth-child(3) img {
+  box-shadow:
+    0 0 12px rgba(255,80,80,.8),
+    0 0 25px rgba(200,40,40,.5);
+}   /* Matt - Red */
+
+.player-cards a:nth-child(4) img {
+  box-shadow:
+    0 0 12px rgba(80,220,220,.8),
+    0 0 25px rgba(40,180,180,.5);
+}   /* Marggie - Teal */
+
+
+
+
+.player-cards a:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* rotation */
+.player-cards img:nth-child(1) { transform: rotate(-4deg); }
+.player-cards img:nth-child(2) { transform: rotate(2deg); }
+.player-cards img:nth-child(3) { transform: rotate(-2deg); }
+.player-cards img:nth-child(4) { transform: rotate(3deg); }
+
+.player-cards img:hover {
+  transform: scale(1.08) rotate(0deg);
+  z-index: 2;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.95);
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9);
+}
+
+.modal img {
+  display: block;
+  margin: auto;
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 10px;
+}
+
+.modal:target {
+  display: block;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  color: white;
+  font-size: 40px;
+  text-decoration: none;
+}
+
+.note { margin-top: 15px; font-size: 0.9rem; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Dominion League</h1>
+  <p>"Where fortunes are forged and provinces claimed"</p>
+</header>
+
+<div class="container">
+
+<div class="leader-banner" id="leaderBanner"></div>
+
+<h2 class="section-title">🏆 Standings</h2>
+<div class="table-wrapper">
+<table id="standings">
+<thead>
+<tr>
+<th>Rank</th>
+<th onclick="sortTable(1)">Name</th>
+<th onclick="sortTable(2)">Wins</th>
+<th onclick="sortTable(3)">2nds</th>
+<th onclick="sortTable(4)">3rds</th>
+<th onclick="sortTable(5)">4ths</th>
+<th onclick="sortTable(6)">League Points</th>
+<th onclick="sortTable(7)">Total VP</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+
+<div class="note">
+<strong>Tiebreaker Procedure:</strong> League Points → Total VP → Total Wins
+</div>
+
+<h2 class="section-title">⚔️ Game Results</h2>
+<div class="cards">
+    <div class="card">
+        <h3>Saturday, March 21, 2026 - Game 1</h3>
+        <div class="score-row"><span>Marggie</span><span>28</span></div>
+        <div class="score-row"><span>Matt</span><span>26</span></div>
+        <div class="score-row"><span>Jen</span><span>25</span></div>
+        <div class="score-row"><span>John</span><span>22</span></div>
+    </div>
+
+    <div class="card">
+        <h3>Saturday, March 21, 2026 - Game 2</h3>
+        <div class="score-row"><span>Marggie</span><span>33</span></div>
+        <div class="score-row"><span>John</span><span>30</span></div>
+        <div class="score-row"><span>Matt</span><span>28</span></div>
+        <div class="score-row"><span>Jen</span><span>27</span></div>
+    </div>
+
+    <div class="card">
+        <h3>Saturday, March 21, 2026 - Game 3</h3>
+        <div class="score-row"><span>John</span><span>14</span></div>
+        <div class="score-row"><span>Jen</span><span>10</span></div>
+        <div class="score-row"><span>Marggie</span><span>8</span></div>
+        <div class="score-row"><span>Matt</span><span>-2</span></div>
+    </div>
+</div>
+
+<h2 class="section-title">🏰 The Players</h2>
+<div class="subtitle">The realm’s most formidable (and troublesome) competitors.</div>
+
+<div class="players-section">
+  <div class="player-cards">
+    <a href="#img1"><img src="JohnCardFinal.png"></a>
+    <a href="#img2"><img src="JenCardFinal.png"></a>
+    <a href="#img3"><img src="MattCardFinal.png"></a>
+    <a href="#img4"><img src="MarggieCardFinal.png"></a>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="img1" class="modal"><a href="#" class="close">&times;</a><img src="JohnCardFinal.png"></div>
+<div id="img2" class="modal"><a href="#" class="close">&times;</a><img src="JenCardFinal.png"></div>
+<div id="img3" class="modal"><a href="#" class="close">&times;</a><img src="MattCardFinal.png"></div>
+<div id="img4" class="modal"><a href="#" class="close">&times;</a><img src="MarggieCardFinal.png"></div>
+
+</div>
+
+<script>
+const players = [
+  {name:'Marggie', wins:2, seconds:0, thirds:1, fourths:0, lp:7, vp:69},
+  {name:'John', wins:1, seconds:1, thirds:0, fourths:1, lp:5, vp:66},
+  {name:'Matt', wins:0, seconds:1, thirds:1, fourths:1, lp:3, vp:52},
+  {name:'Jen', wins:0, seconds:1, thirds:1, fourths:1, lp:3, vp:62}
+];
+
+function render(){
+  const sorted = [...players].sort((a,b)=>{
+    if(b.lp!==a.lp) return b.lp-a.lp;
+    if(b.vp!==a.vp) return b.vp-a.vp;
+    return b.wins-a.wins;
+  });
+
+  document.getElementById('leaderBanner').innerHTML = `👑 Current Leader: ${sorted[0].name}`;
+
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML='';
+
+  sorted.forEach((p,i)=>{
+    const row = `<tr class="${i===0 ? 'first-place' : ''}">
+      <td class="rank">${i+1}</td>
+      <td>${p.name}</td>
+      <td>${p.wins}</td>
+      <td>${p.seconds}</td>
+      <td>${p.thirds}</td>
+      <td>${p.fourths}</td>
+      <td class="league-points">${p.lp}</td>
+      <td>${p.vp} <img src="vp-icon.png" class="vp-icon"></td>
+    </tr>`;
+    tbody.innerHTML += row;
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
